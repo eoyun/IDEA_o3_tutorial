@@ -1,0 +1,44 @@
+# Pythia8 generation + ddsim (physics event) 을 한 job 에서 돌리는 template.
+#
+# 사용법:
+#     condor_submit condor/gen_sim/submit_gen_sim.sub
+#     condor_submit -a "TAG=my_Zee_eCM91" -a "CARD=$IDEA_TUTORIAL_ROOT/gen/p8_ee_Zee_eCM91.cmd" -a "NJOBS=2" -a "NEV=5" condor/gen_sim/submit_gen_sim.sub
+# (변수는 파일 안에서 고치거나 -a "NAME=값" 으로 덮어쓴다.)
+#
+# 출력: condor_output/<TAG>_Gen/ (hepmc), condor_output/<TAG>_Sim/ (ddsim 출력)
+# Sim 뒤에 Digi 를 하려면 condor/digi/submit_digi.sub 를
+#     DIGI_COMPACT_XML=FCCee/IDEA/compact/IDEA_o3_v01/IDEA_o3_v01.xml  DIGI_SKIP_HELIX=0
+# 으로 (physics 는 자기장 ON) 제출한다.
+
+# ---- 여기를 수정 ----
+TAG       = my_Zqq_eCM91
+CARD      = $ENV(IDEA_TUTORIAL_ROOT)/gen/p8_ee_Zqq_eCM91.cmd
+STEERING  = $ENV(IDEA_TUTORIAL_ROOT)/sim/SteeringFile_o3_physics.py
+NEV       = 5
+NJOBS     = 2
+# ----------------------
+
+# 반드시 group 을 지정해서 제출한다.
+accounting_group = group_fcc
+
+universe        = vanilla
+executable      = $ENV(IDEA_TUTORIAL_ROOT)/condor/gen_sim/wrapper_gen_sim.sh
+arguments       = $(Process) $ENV(IDEA_TUTORIAL_ROOT) $(TAG) $(CARD) $(STEERING) $(NEV)
+output          = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(TAG)_GenSim_$(Process).out
+error           = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(TAG)_GenSim_$(Process).err
+log             = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(TAG)_GenSim_$(Process).log
+
+# setup_env.sh 를 source 한 터미널의 경로 설정을 job 에도 넘긴다.
+environment     = "IDEA_TUTORIAL_PKG_DIR=$ENV(IDEA_TUTORIAL_PKG_DIR) TUTORIAL_OUTPUT=$ENV(TUTORIAL_OUTPUT) TUTORIAL_SAMPLES=$ENV(TUTORIAL_SAMPLES)"
+
+should_transfer_files   = YES
+when_to_transfer_output = ON_EXIT
+transfer_output_files   = ""
+
+request_cpus    = 1
+request_memory  = 12000 MB
+request_disk    = 3000 MB
+
+JobBatchName = $(TAG)_GenSim
+
+queue $(NJOBS)

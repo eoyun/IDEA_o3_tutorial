@@ -1,0 +1,44 @@
+# Particle gun Sim 을 condor 로 제출하는 template.
+#
+# 사용법 (setup_env.sh 를 source 한 터미널에서, IDEA_o3_tutorial 루트에서):
+#     condor_submit condor/gun_sim/submit_sim.sub
+# 변수를 명령행으로 바꿔서 제출할 수도 있다:
+#     condor_submit -a "TAG=my_eminus_40GeV_p1" -a "NJOBS=5" -a "NEV=20" condor/gun_sim/submit_sim.sub
+# (변수는 파일 안에서 고치거나 -a "NAME=값" 으로 덮어쓴다.)
+#
+# 출력: condor_output/<TAG>_Sim/<TAG>_sim_<번호>.root    로그: condor_log/
+
+# ---- 여기를 수정 ----
+TAG       = my_eminus_40GeV_p0
+# 사용할 steering file (particle, energy, 위치는 이 파일 안에 들어 있음. 복사해서 수정해 쓰세요)
+STEERING  = $ENV(IDEA_TUTORIAL_ROOT)/sim/SteeringFile_o3_gun.py
+NEV       = 10
+NJOBS     = 3
+# ----------------------
+
+# 반드시 group 을 지정해서 제출한다.
+accounting_group = group_fcc
+
+universe        = vanilla
+executable      = $ENV(IDEA_TUTORIAL_ROOT)/condor/gun_sim/wrapper_sim.sh
+arguments       = $(Process) $ENV(IDEA_TUTORIAL_ROOT) $(TAG) $(STEERING) $(NEV)
+output          = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(TAG)_Sim_$(Process).out
+error           = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(TAG)_Sim_$(Process).err
+log             = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(TAG)_Sim_$(Process).log
+
+# 결과 파일은 공유 파일시스템에 wrapper 가 직접 쓰므로 condor 가 옮길 것이 없다.
+# setup_env.sh 를 source 한 터미널의 경로 설정을 job 에도 넘긴다.
+environment     = "IDEA_TUTORIAL_PKG_DIR=$ENV(IDEA_TUTORIAL_PKG_DIR) TUTORIAL_OUTPUT=$ENV(TUTORIAL_OUTPUT) TUTORIAL_SAMPLES=$ENV(TUTORIAL_SAMPLES)"
+
+should_transfer_files   = YES
+when_to_transfer_output = ON_EXIT
+transfer_output_files   = ""
+
+request_cpus    = 1
+# ddsim 은 전체 o3 geometry 를 올리므로 메모리를 넉넉히 (sungwon 샘플은 16000 MB 로 돌렸다)
+request_memory  = 16000 MB
+request_disk    = 3000 MB
+
+JobBatchName = $(TAG)_Sim
+
+queue $(NJOBS)

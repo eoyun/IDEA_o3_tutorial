@@ -1,0 +1,46 @@
+# Digi/reco 를 condor 로 제출하는 template. Sim job 한 개당 Digi job 한 개.
+#
+# 사용법:
+#     condor_submit condor/digi/submit_digi.sub
+#     condor_submit -a "SIM_DIR=$TUTORIAL_OUTPUT/my_eminus_40GeV_p0_Sim" -a "DIGI_TAG=my_eminus_40GeV_p0" -a "NJOBS=3" condor/digi/submit_digi.sub
+# (변수는 파일 안에서 고치거나 -a "NAME=값" 으로 덮어쓴다. `condor_submit 파일 NAME=값` 은 파일 안의 값에 덮어써져서 안 먹는다.)
+#
+# gun (자기장 OFF) 샘플은 DIGI_SKIP_HELIX=1, physics (Z->ee/qq, 자기장 ON) 샘플은 DIGI_COMPACT_XML 을
+# IDEA_o3_v01.xml 로, DIGI_SKIP_HELIX=0 으로 바꾼다.
+#
+# 출력: condor_output/<DIGI_TAG>_Digi/<DIGI_TAG>_digi_<번호>.root
+
+# ---- 여기를 수정 ----
+DIGI_TAG          = my_eminus_40GeV_p0
+SIM_DIR           = $ENV(IDEA_TUTORIAL_ROOT)/condor_output/my_eminus_40GeV_p0_Sim
+DIGI_COMPACT_XML  = FCCee/IDEA/compact/IDEA_o3_v01/IDEA_o3_v01_noField.xml
+DIGI_SKIP_HELIX   = 1
+NJOBS             = 3
+# ----------------------
+
+# 반드시 group 을 지정해서 제출한다.
+accounting_group = group_fcc
+
+universe        = vanilla
+executable      = $ENV(IDEA_TUTORIAL_ROOT)/condor/digi/wrapper_digi.sh
+arguments       = $(Process) $ENV(IDEA_TUTORIAL_ROOT) $(SIM_DIR) $(DIGI_TAG) $(DIGI_COMPACT_XML) $(DIGI_SKIP_HELIX)
+output          = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(DIGI_TAG)_Digi_$(Process).out
+error           = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(DIGI_TAG)_Digi_$(Process).err
+log             = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(DIGI_TAG)_Digi_$(Process).log
+
+# setup_env.sh 를 source 한 터미널의 경로 설정을 job 에도 넘긴다.
+environment     = "IDEA_TUTORIAL_PKG_DIR=$ENV(IDEA_TUTORIAL_PKG_DIR) TUTORIAL_OUTPUT=$ENV(TUTORIAL_OUTPUT) TUTORIAL_SAMPLES=$ENV(TUTORIAL_SAMPLES)"
+
+should_transfer_files   = YES
+when_to_transfer_output = ON_EXIT
+transfer_output_files   = ""
+
+request_cpus    = 1
+# gun Digi 는 관측 최대 약 4.0 GB 라서 5000 MB 를 요청한다.
+# physics (Z->ee/qq) Digi 는 관측 최대 약 6.0 GB 이므로 -a "request_memory=8000 MB" 처럼 늘려서 제출한다.
+request_memory  = 5000 MB
+request_disk    = 2000 MB
+
+JobBatchName = $(DIGI_TAG)_Digi
+
+queue $(NJOBS)

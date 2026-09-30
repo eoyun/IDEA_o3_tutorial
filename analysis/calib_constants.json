@@ -1,0 +1,47 @@
+{
+  "_comment": "sungwon nominal calibration constants (IDEA_o3, noOpt, Birks ON, neutral filter ON, scaleADC=1, 1 deg tilt + 8 mm vertex smear, field OFF). (raw sum)*constant = GeV. S_crystal/C_crystal: o3_res_eminus_40GeV_p0_noOpt_Digi (3000 ev). S_fiber/C_fiber: o3_calibB_drc_eminus_40GeV_p0_noOpt_scaleADC1_Digi (3000 ev, DRC-only geometry). chi: o3_calibB_piminus_40GeV_p0_noOpt_scaleADC1_Digi (4732 ev), chi_fiber from truth shower_region==3 events, chi_crystal from all events.",
+  "constants": {
+    "S_crystal": {
+      "value": 0.0005082740707650843,
+      "sem": 1.0460465180099423e-07,
+      "raw_signal_mean": 78697.6993,
+      "raw_signal_sem": 16.1963,
+      "n_events": 3000
+    },
+    "C_crystal": {
+      "value": 0.010225182374648638,
+      "sem": 3.6767628988236146e-06,
+      "raw_signal_mean": 3911.9107,
+      "raw_signal_sem": 1.4066,
+      "n_events": 3000
+    },
+    "S_fiber": {
+      "value": 0.0003615807429704084,
+      "sem": 3.1430673333386864e-07,
+      "raw_signal_mean": 110625.36038672164,
+      "raw_signal_sem": 96.16191216764555,
+      "n_events": 3000.0
+    },
+    "C_fiber": {
+      "value": 0.0005457518093977627,
+      "sem": 4.216847712736901e-07,
+      "raw_signal_mean": 73293.38961631664,
+      "raw_signal_sem": 56.6314315482261,
+      "n_events": 3000.0
+    }
+  },
+  "chi": {
+    "chi_fiber": 0.43974963055304345,
+    "chi_crystal": 0.5050323836944657,
+    "chi_fiber_truth": 0.43974963055304345,
+    "n_events_total": 4732,
+    "adopted_method": "truth",
+    "chi_crystal_sensitivity": {
+      "_comment": "chi_crystal's mean-matching formula divides by E'=E-<E_DR,fiber>, which can be numerically fragile when <S_c> is comparable in magnitude to E' (observed 0.18/0.47/1.85 swings across otherwise-similar analyses). These fields quantify that fragility and give an independent, well-posed estimate.",
+      "E_prime_minus_1GeV": 0.20365977148907,
+      "E_prime_plus_1GeV": 0.6409237370157354,
+      "chi_crystal_rms_scan": 0.45501253132832087,
+      "chi_crystal_rms_scan_min_rms_gev": 2.855240224568017
+    }
+  }
+}
