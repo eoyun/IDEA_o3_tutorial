@@ -390,6 +390,7 @@ K4GEO_REPO=https://github.com/<id>/k4geo.git K4GEO_BRANCH=my_branch ./install.sh
 | Digi 에서 ONNX 파일을 못 찾는다 | `install.sh` 의 마지막 단계 (다운로드) 가 실패한 것입니다. `digi/SimpleGatrIDEAv3o1.onnx` 가 있는지 확인하고 `./install.sh` 를 다시 실행하세요. |
 | condor job 이 `Held` | `condor_q -hold` 로 이유를 보세요. 메모리 초과면 `-a "request_memory=8000 MB"` 처럼 늘려서 다시 제출합니다. |
 | 분석 스크립트가 `*.root` 를 잘못 읽는다 | 디렉터리를 줄 때는 `*_digi_*.root` 만 읽도록 되어 있습니다. 파일 glob 을 직접 줄 때는 `TrackHitDistances_*.root` 가 섞이지 않게 하세요. |
+| install 중 `PermissionError: /tmp/podio/jinja2_cache/...`, `Could not generate datamodel 'extension'` | 다른 사용자가 만든 `/tmp/podio` 에 쓸 수 없는 것입니다. 최신 `install.sh` 는 `TMPDIR` 를 설치 경로 안(`$PKG_DIR/.tmp`)으로 바꿔서 피합니다. `git pull` 로 `install.sh` 를 갱신하고 다시 실행하세요 (`TMPDIR=~/tmp_podio ./install.sh` 처럼 직접 지정해도 됩니다). |
 | `ModuleNotFoundError: ROOT` | `source setup_env.sh` 를 안 했습니다. |
 
 ## 13. 자원 / 시간 / 용량 안내

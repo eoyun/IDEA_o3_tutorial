@@ -44,6 +44,11 @@ source /cvmfs/sw.hsf.org/key4hep/setup.sh -r "$RELEASE" > /dev/null
 log "key4hep $RELEASE, NJOBS=$NJOBS, packages -> $PKG_DIR"
 mkdir -p "$PKG_DIR"
 
+# podio 가 jinja2 cache 를 $TMPDIR/podio 에 쓰는데, /tmp/podio 를 다른 사용자가 먼저 만들어 두면
+# 권한 오류 (PermissionError) 로 DCHdigi 빌드가 실패한다. 내 전용 임시 디렉터리를 쓴다.
+export TMPDIR="$PKG_DIR/.tmp"
+mkdir -p "$TMPDIR"
+
 is_done() { [ "$FORCE" != "1" ] && [ -f "$PKG_DIR/$1/.install_done" ]; }
 
 clone_or_update() {  # <name> <repo> <rev-or-branch>
