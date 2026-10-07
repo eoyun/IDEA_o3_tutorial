@@ -116,6 +116,20 @@ geometry 는 세 가지가 있습니다 (`k4geo/FCCee/IDEA/compact/IDEA_o3_v01/`
 주의: Digi 디렉터리에는 `TrackHitDistances_N.root` 같은 부산물도 있어서, 분석 스크립트에 디렉터리를 주면
 `*_digi_*.root` 만 읽도록 되어 있습니다.
 
+### 예제 파일 하나씩 내 디렉터리로 복사하기
+
+샘플 전체는 70 GB 가 넘어서 통째로 가져갈 수 없습니다. 파일 구조를 직접 열어 보고 싶으면
+디렉터리마다 ROOT 파일 하나씩만 복사하는 스크립트를 쓰세요.
+
+```bash
+./copy_example_files.sh                 # Digi 파일 20개, 약 0.9 GB -> ./example_files/<샘플 디렉터리>/
+./copy_example_files.sh -o /my/path     # 복사할 위치를 지정
+./copy_example_files.sh --with-sim      # Sim 파일도 같이 (39개, 약 2.1 GB)
+./copy_example_files.sh -n              # 복사하지 않고 파일 목록과 용량만 확인
+```
+
+파일 하나는 100 event (physics 는 20 event) 정도가 들어 있고, 열어 보려면 `source setup_env.sh` 후 `root -l <파일>` 이나 python (`podio.reading`) 을 쓰면 됩니다.
+
 ## 5. Step 1. Simulation (particle gun)
 
 `sim/SteeringFile_o3_gun.py` 하나로 모든 gun 샘플을 만듭니다. 파일 위쪽 **USER SETTINGS** 블록을 고치면 됩니다.

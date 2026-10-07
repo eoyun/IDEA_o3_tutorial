@@ -1,5 +1,6 @@
 packages/
 condor_output/
+example_files/
 condor_log/*
 !condor_log/.gitkeep
 digi/*.onnx
@@ -10,3 +11,4 @@ __pycache__/
 install.log
 .install_done
 my_calib_constants.json
+my.json
