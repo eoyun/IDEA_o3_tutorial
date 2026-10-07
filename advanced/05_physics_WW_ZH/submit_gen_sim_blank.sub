@@ -1,0 +1,38 @@
+# [advanced 05] Pythia8 generation + ddsim (physics event) condor 제출 파일. 빈칸을 채운다.
+#
+# advanced/work/ 에 wrapper_gen_sim.sh, card, physics steering 과 같이 두고, repo 루트에서 제출한다:
+#     condor_submit -dry-run dry.ad advanced/work/submit_gen_sim.sub
+#     condor_submit -a "TAG=my_ZH_qqbb" -a "CARD=$IDEA_TUTORIAL_ROOT/advanced/work/p8_ee_ZH_qqbb_eCM240.cmd" advanced/work/submit_gen_sim.sub
+#
+# 출력: $TUTORIAL_OUTPUT/<TAG>_Gen/ (hepmc), $TUTORIAL_OUTPUT/<TAG>_Sim/ (ddsim 출력)
+
+# ---- 변수 ----
+TAG       = my_WW_qqqq
+CARD      = $ENV(IDEA_TUTORIAL_ROOT)/advanced/work/p8_ee_WW_qqqq_eCM240.cmd
+STEERING  = ____TODO_1____
+NEV       = 5
+NJOBS     = 1
+# ------------
+
+accounting_group = group_fcc
+
+universe        = vanilla
+executable      = $ENV(IDEA_TUTORIAL_ROOT)/advanced/work/wrapper_gen_sim.sh
+arguments       = ____TODO_2____
+output          = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(TAG)_GenSim_$(Process).out
+error           = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(TAG)_GenSim_$(Process).err
+log             = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(TAG)_GenSim_$(Process).log
+
+environment     = "IDEA_TUTORIAL_PKG_DIR=$ENV(IDEA_TUTORIAL_PKG_DIR) TUTORIAL_OUTPUT=$ENV(TUTORIAL_OUTPUT) TUTORIAL_SAMPLES=$ENV(TUTORIAL_SAMPLES)"
+
+should_transfer_files   = YES
+when_to_transfer_output = ON_EXIT
+transfer_output_files   = ""
+
+request_cpus    = 1
+request_memory  = ____TODO_3____
+request_disk    = 3000 MB
+
+JobBatchName = $(TAG)_GenSim
+
+queue $(NJOBS)

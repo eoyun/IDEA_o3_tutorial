@@ -1,0 +1,39 @@
+# [advanced 04] Digi/reco condor 제출 파일. Sim job 한 개당 Digi job 한 개. 빈칸을 채운다.
+#
+# advanced/work/ 에 wrapper_digi.sh 와 같이 두고, repo 루트에서 제출한다:
+#     condor_submit -dry-run dry.ad advanced/work/submit_digi.sub
+#     condor_submit advanced/work/submit_digi.sub
+# 05 의 physics 샘플에도 같은 파일을 -a 로 바꿔서 쓴다 (05 README 참고).
+#
+# 출력: $TUTORIAL_OUTPUT/<DIGI_TAG>_Digi/<DIGI_TAG>_digi_<번호>.root
+
+# ---- 변수 ----
+DIGI_TAG          = ____TODO_1____
+SIM_DIR           = ____TODO_2____
+DIGI_COMPACT_XML  = ____TODO_3____
+DIGI_SKIP_HELIX   = ____TODO_4____
+NJOBS             = 1
+# ------------
+
+accounting_group = group_fcc
+
+universe        = vanilla
+executable      = $ENV(IDEA_TUTORIAL_ROOT)/advanced/work/wrapper_digi.sh
+arguments       = $(Process) $ENV(IDEA_TUTORIAL_ROOT) $(SIM_DIR) $(DIGI_TAG) $(DIGI_COMPACT_XML) $(DIGI_SKIP_HELIX)
+output          = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(DIGI_TAG)_Digi_$(Process).out
+error           = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(DIGI_TAG)_Digi_$(Process).err
+log             = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(DIGI_TAG)_Digi_$(Process).log
+
+environment     = "IDEA_TUTORIAL_PKG_DIR=$ENV(IDEA_TUTORIAL_PKG_DIR) TUTORIAL_OUTPUT=$ENV(TUTORIAL_OUTPUT) TUTORIAL_SAMPLES=$ENV(TUTORIAL_SAMPLES)"
+
+should_transfer_files   = YES
+when_to_transfer_output = ON_EXIT
+transfer_output_files   = ""
+
+request_cpus    = 1
+request_memory  = ____TODO_5____
+request_disk    = 2000 MB
+
+JobBatchName = $(DIGI_TAG)_Digi
+
+queue $(NJOBS)

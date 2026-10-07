@@ -11,4 +11,5 @@ __pycache__/
 install.log
 .install_done
 my_calib_constants.json
+advanced/work/
 my.json

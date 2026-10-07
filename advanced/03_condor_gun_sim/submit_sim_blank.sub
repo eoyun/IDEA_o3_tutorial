@@ -1,0 +1,37 @@
+# [advanced 03] particle gun Sim condor 제출 파일. 빈칸을 채운다.
+#
+# advanced/work/ 에 wrapper_sim.sh 와 같이 두고, repo 루트에서 제출한다:
+#     condor_submit -dry-run dry.ad advanced/work/submit_sim.sub     # 먼저 확인
+#     condor_submit advanced/work/submit_sim.sub
+#
+# 출력: $TUTORIAL_OUTPUT/<TAG>_Sim/<TAG>_sim_<번호>.root    로그: condor_log/
+
+# ---- 변수 ----
+TAG       = ____TODO_1____
+STEERING  = $ENV(IDEA_TUTORIAL_ROOT)/advanced/work/SteeringFile_o3_gun.py
+NEV       = 20
+NJOBS     = 1
+# ------------
+
+accounting_group = ____TODO_2____
+
+universe        = vanilla
+executable      = ____TODO_3____
+arguments       = ____TODO_4____
+output          = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(TAG)_Sim_$(Process).out
+error           = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(TAG)_Sim_$(Process).err
+log             = $ENV(IDEA_TUTORIAL_ROOT)/condor_log/$(TAG)_Sim_$(Process).log
+
+environment     = "IDEA_TUTORIAL_PKG_DIR=$ENV(IDEA_TUTORIAL_PKG_DIR) TUTORIAL_OUTPUT=$ENV(TUTORIAL_OUTPUT) TUTORIAL_SAMPLES=$ENV(TUTORIAL_SAMPLES)"
+
+should_transfer_files   = YES
+when_to_transfer_output = ON_EXIT
+transfer_output_files   = ""
+
+request_cpus    = 1
+request_memory  = ____TODO_5____
+request_disk    = 3000 MB
+
+JobBatchName = $(TAG)_Sim
+
+queue ____TODO_6____
