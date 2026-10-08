@@ -67,7 +67,7 @@ Gaudi (`k4run`) job 입니다. `TopAlg` 에 넣은 algorithm 이 event 마다 �
 
 ```bash
 condor_submit -dry-run dry.ad advanced/work/submit_digi.sub
-grep -E "^(Args|AcctGroup|RequestMemory) " dry.ad
+grep -E "^(Args|AcctGroup|RequestMemory)=" dry.ad
 condor_submit advanced/work/submit_digi.sub
 condor_tail <cluster>.0
 ```

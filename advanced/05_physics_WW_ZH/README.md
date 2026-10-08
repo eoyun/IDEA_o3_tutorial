@@ -109,7 +109,7 @@ job 하나가 Pythia 로 HepMC 를 만들고, 바로 이어서 그 파일로 dds
 
 ```bash
 cd $IDEA_TUTORIAL_ROOT
-condor_submit -dry-run dry.ad advanced/work/submit_gen_sim.sub && grep -E "^(Args|AcctGroup|RequestMemory) " dry.ad
+condor_submit -dry-run dry.ad advanced/work/submit_gen_sim.sub && grep -E "^(Args|AcctGroup|RequestMemory)=" dry.ad
 condor_submit advanced/work/submit_gen_sim.sub                                  # WW (파일의 기본값)
 condor_submit -a "TAG=my_ZH_qqbb" \
     -a "CARD=$IDEA_TUTORIAL_ROOT/advanced/work/p8_ee_ZH_qqbb_eCM240.cmd" advanced/work/submit_gen_sim.sub

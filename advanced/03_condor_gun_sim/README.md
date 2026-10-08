@@ -70,10 +70,10 @@ steering 의 함수 부분 (01 의 `TODO_11`, `TODO_12`) 은 제출 전에 `01_s
 
 ```bash
 condor_submit -dry-run dry.ad advanced/work/submit_sim.sub
-grep -E "^(Cmd|Args|AcctGroup|RequestMemory|Environment) " dry.ad
+grep -E "^(Cmd|Args|AcctGroup|RequestMemory|Environment)=" dry.ad
 ```
 
-`Args` 에 tag, steering 경로, event 수가 제대로 들어갔는지, `AcctGroup = "group_fcc"` 인지 봅니다.
+`Args` 에 tag, steering 경로, event 수가 제대로 들어갔는지, `AcctGroup="group_fcc"` 인지 봅니다.
 빈칸 확인: `grep -n "____TODO" advanced/work/wrapper_sim.sh advanced/work/submit_sim.sub` 가 아무것도 출력하지 않아야 합니다.
 
 **2. 제출과 감시**
